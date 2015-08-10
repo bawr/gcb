@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+set -o pipefail
+
+NAME=`git config branch.master.merge`
+
+git pull origin "$NAME:HEAD"

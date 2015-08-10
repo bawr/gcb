@@ -1,0 +1,46 @@
+#!/bin/sh
+
+set -e
+set -o pipefail
+
+USER="$1"
+REPO="$2"
+INIT="$3"
+NAME="refs/remotes/origin/HEAD"
+
+help ()
+{
+    echo "Usage: $0 <github_user> <github_repo> [covert_path]"
+}
+
+if [ -z "$USER" ];
+then
+    help
+    echo "user not set"
+    exit 1
+fi
+
+if [ -z "$REPO" ];
+then
+    help
+    echo "repo not set"
+    exit 1
+fi
+
+if [ -z "$INIT" ];
+then
+    INIT="."
+fi
+
+git init "$INIT"
+
+cd "$INIT"
+
+git remote add origin "https://github.com/$USER/$REPO.git"
+
+git config branch.master.remote origin
+git config branch.master.merge "$NAME"
+git config push.default simple
+
+git checkout --orphan "master"
+git commit --allow-empty --message "initial covert commit"

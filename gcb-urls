@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+set -o pipefail
+
+BASE=`git config remote.origin.url | sed 's/\.git$//'`
+HEAD=`git rev-parse HEAD`
+
+echo "tree: $BASE/tree/$HEAD"
+echo "pack: $BASE/archive/$HEAD.zip"
